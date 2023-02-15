@@ -1,14 +1,17 @@
-import csv
+from functions import csv_import
 
-
-stocks = ['Action-1', 'Action-2', 'Action-3', 'Action-4']
 
 def combinations(stocks):
+    """Boucle sur la liste d'actions pour créer les premières combinaisons. Boucle ensuite sur la liste des combinaisons pour créer les prochaines combinaisons en y ajoutant chaque action qui suit la dernière action de la combinaison.
+
+    Retourne:
+        liste: Combinaisons d'actions (liste de listes).
+    """
     count = 0
     combinations = []
 
     for i in range(0, len(stocks)):
-        combination = [stocks[i]]
+        combination = stocks[i]
         combinations.append(combination)
         count += 1
 
@@ -23,9 +26,10 @@ def combinations(stocks):
                     combinations.append(combination)
     return combinations
 
-
-
 ########## Main ##########
 
+stocks = csv_import.get_stocks()
+print('stocks', stocks)
+
 combinations = combinations(stocks)
-print(combinations)
+print('combinations', combinations)
