@@ -1,5 +1,6 @@
 from functions import data_import
 from functions import data_export
+import time
 
 
 def combinations(stocks):
@@ -122,6 +123,7 @@ def brute_force():
     """
     try:
         print("\nDébut de la spéculation par algorithme de Force brute.")
+        start_time = time.time()
 
         stocks = data_import.get_stocks()
 
@@ -134,7 +136,11 @@ def brute_force():
         optimal_investment = [select_optimal_investment(combinations_result)]
         csv_name = 'brute_force_optimal_investment'
         data_export.create_csv_result(csv_name, optimal_investment)
-        print(f"L'investissement optimal selon l'algorithme de force brute est :\n{optimal_investment}\n")
+        print(f"L'investissement optimal selon l'algorithme de force brute est :\n{optimal_investment}")
+
+        end_time = time.time()
+        run_time = end_time - start_time
+        print(f"\nLa durée d'exécution de l'algorithme est de {run_time} secondes\n")
 
     except Exception as e:
         print(f"\nERREUR: L'algorithme n'a pas fonctionné.\n{str(e)}")
