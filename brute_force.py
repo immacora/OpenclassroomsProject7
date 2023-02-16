@@ -32,12 +32,12 @@ def combinations(stocks):
                         combinations.append(combination)
         return combinations
     except Exception as e:
-        print(f"ERREUR: Les combinaisons d'actions n'ont pas pu être créées.\n{str(e)}\n")
+        print(f"\nERREUR: Les combinaisons d'actions n'ont pas pu être créées.\n{str(e)}")
 
 
 def create_combinations_result(combinations):
-    """Crée un dictionnaire par combinaison d'action (id, name, len_combination, total_investment, total_profit)
-    et la liste des dictionnaires.
+    """Crée un dictionnaire par combinaison d'action contenant la simulation d'investissement et de profit
+    (id, name, len_combination, total_investment, total_profit) et la liste des dictionnaires.
 
     Retourne:
         liste: Résultats (dictionnaires) de la simulation d'investissement et de profit par combinaison d'actions.
@@ -45,34 +45,39 @@ def create_combinations_result(combinations):
     combinations_result = []
     count = 0
 
-    for combination in combinations:
-        count += 1
-        id = count
-        name = f"combinaison_{count}"
-        len_combination = len(combination)
-        total_investment = 0.0
-        total_profit = 0.0
+    try:
+        print("\nCréation de la simulation d'investissement et de profit par combinaison d'actions.")
 
-        combination_result = {
-            'id': id,
-            'name': name,
-            'actions_combination': combination,
-            'nb_actions': len_combination,
-        }
+        for combination in combinations:
+            count += 1
+            id = count
+            name = f"combinaison_{count}"
+            len_combination = len(combination)
+            total_investment = 0.0
+            total_profit = 0.0
 
-        for action in combination:
-            action_price = float(action[1])
-            total_investment += action_price
+            combination_result = {
+                'id': id,
+                'name': name,
+                'actions_combination': combination,
+                'nb_actions': len_combination,
+            }
 
-            action_profit = float(action[2])
-            total_profit += action_profit
+            for action in combination:
+                action_price = float(action[1])
+                total_investment += action_price
 
-            combination_result['total_investment'] = total_investment
-            combination_result['total_profit'] = total_profit
+                action_profit = float(action[2])
+                total_profit += action_profit
 
-        combinations_result.append(combination_result)
+                combination_result['total_investment'] = total_investment
+                combination_result['total_profit'] = total_profit
 
-    return combinations_result
+            combinations_result.append(combination_result)
+
+        return combinations_result
+    except Exception as e:
+        print(f"\nERREUR: Le calcul de la simulation a échoué.\n{str(e)}")
 
 
 def select_optimal_investment(combinations_result):
@@ -85,19 +90,24 @@ def select_optimal_investment(combinations_result):
     """
     combinations_max_invest = []
 
-    for combination in combinations_result:
-        if combination['total_investment'] <= 500.0:
-            combinations_max_invest.append(combination)
+    try:
+        print("\nSélection du meilleur profit pour un montant maximal de 500 euros.")
 
-    combination_total_profit_max = combinations_max_invest[0]['total_profit']
-    optimal_investment = combinations_max_invest[0]
+        for combination in combinations_result:
+            if combination['total_investment'] <= 500.0:
+                combinations_max_invest.append(combination)
 
-    for combination in combinations_max_invest:
-        if combination['total_profit'] > combination_total_profit_max:
-            combination_total_profit_max = combination['total_profit']
-            optimal_investment = combination
+        combination_total_profit_max = combinations_max_invest[0]['total_profit']
+        optimal_investment = combinations_max_invest[0]
 
-    return optimal_investment
+        for combination in combinations_max_invest:
+            if combination['total_profit'] > combination_total_profit_max:
+                combination_total_profit_max = combination['total_profit']
+                optimal_investment = combination
+
+        return optimal_investment
+    except Exception as e:
+        print(f"\nERREUR: La sélection du meilleur profit a échoué.\n{str(e)}")
 
 
 def brute_force():
@@ -110,18 +120,24 @@ def brute_force():
     et l'exporte dans le répertoire result.
     Trie les dictionnaires, sélectionne la solution optimale selon les critères énoncés et l'affiche.
     """
-    stocks = data_import.get_stocks()
-    
-    total_combinations = combinations(stocks)
+    try:
+        print("\nDébut de la spéculation par algorithme de Force brute.")
 
-    combinations_result = create_combinations_result(total_combinations)
-    csv_name = 'brute_force_combinations_result'
-    data_export.create_csv_result(csv_name, combinations_result)
+        stocks = data_import.get_stocks()
 
-    optimal_investment = [select_optimal_investment(combinations_result)]
-    csv_name = 'brute_force_optimal_investment'
-    data_export.create_csv_result(csv_name, optimal_investment)
-    print(f"L'investissement optimal selon l'algorithme de force brute est :\n{optimal_investment}\n")
+        total_combinations = combinations(stocks)
+
+        combinations_result = create_combinations_result(total_combinations)
+        csv_name = 'brute_force_combinations_result'
+        data_export.create_csv_result(csv_name, combinations_result)
+
+        optimal_investment = [select_optimal_investment(combinations_result)]
+        csv_name = 'brute_force_optimal_investment'
+        data_export.create_csv_result(csv_name, optimal_investment)
+        print(f"L'investissement optimal selon l'algorithme de force brute est :\n{optimal_investment}\n")
+
+    except Exception as e:
+        print(f"\nERREUR: L'algorithme n'a pas fonctionné.\n{str(e)}")
 
 
 """ Appel de l'algorithme BRUTE FORCE"""

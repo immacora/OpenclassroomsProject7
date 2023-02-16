@@ -3,12 +3,12 @@ import csv
 
 
 def create_csv_result(csv_name, result):
-    """Crée le répertoire result s'il n'existe pas et y ajoute le fichier du résultat obtenu.
-    """
+    """Crée le répertoire result s'il n'existe pas et y ajoute le fichier du résultat obtenu."""
+
+    print(f"\nCréation du fichier {csv_name}.")
+
     if not os.path.exists('result'):
         os.makedirs('result')
-    
-    print(f"\nCréation du fichier {csv_name}.")
 
     try:
         keys = result[0].keys()

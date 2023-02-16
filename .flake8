@@ -4,13 +4,12 @@ exclude=
     .gitignore,
     __pycache__,
     data/,
+    result/,
+    env/,
     README.md,
-    requirements.txt,
-    env/
+    requirements.txt
 
-filename =
-    brute_force.py,
-
+filename = *.py
 
 max-line-length = 119
 max-doc-length = 119
