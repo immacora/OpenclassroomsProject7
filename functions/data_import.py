@@ -7,8 +7,10 @@ def get_stocks():
     Retourne: 
         liste: Actions (noms, prix et profit)."""
     stocks = []
+
+    print("\nImport des actions du fichier dataset0_Python+P7.csv (répertoire data).")
+
     try:
-        print("\nImport du fichier dataset0_Python+P7.csv contenu dans le répertoire data.\n")
         with open('data/dataset0_Python+P7.csv', newline='') as f:
             reader = csv.reader(f)
             for row in reader:
