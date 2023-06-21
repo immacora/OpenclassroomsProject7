@@ -24,7 +24,7 @@ def create_csv_result(csv_name, df):
     try:
         filepath = Path('result/', csv_name + '.csv')
         filepath.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(filepath)
+        df.to_csv(filepath, index=False)
         print(f"Le fichier {csv_name} a été créé, il est consultable depuis le répertoire result.")
 
     except Exception as e:
@@ -35,37 +35,28 @@ def data_cleaning(df, df_name):
     """
     Crée le rapport d'exploration des données.
     Recherche, exporte en csv et supprime :
-        les actions d'un prix aberrant (<= 2€ et > à 400€)
-        les actions d'un profit aberrant (<= 0€)
+        les actions d'un prix aberrant (<= 0€ et > à 400€)
         les doublons
     Ajoute la colonne calculée "yield" (rendement) au dataframe.
     Crée la boite à moustache sur les bénéfices (en %) des données nettoyées.
     Recherche, exporte en csv et supprime les actions au pourcentage de bénéfice aberrant.
-    Retourne le dataframe enrichi de la colonne percentage_yield,
-    trié par bénéfice et profit dans l'ordre descendant,
-    et nettoyé des données aberrantes et dupliquées.
+    Trie le dataframe par bénéfice et profit dans l'ordre descendant.
+    Retourne le dataframe trié, enrichi de la colonne percentage_yield et nettoyé des données aberrantes et dupliquées.
     """
     print(f"\nRapport d'exploration des données initiales du {df_name}.")
 
     df_describe = df.describe()
     print(df_describe)
 
-    df_aberrant_price_down = df[df.price <= 2]
+    df_aberrant_price_down = df[df.price <= 0]
     df_aberrant_price_high = df[df.price > 400]
     df_aberrant_price = pd.concat([df_aberrant_price_down, df_aberrant_price_high])
     csv_name = f"ABERRANT_PRICE_{df_name}"
     create_csv_result(csv_name, df_aberrant_price)
     print(f"\nNettoyage des actions de prix aberrants du fichier {df_name}.")
-    indexNames = df[(df['price'] <= 2)].index
+    indexNames = df[(df['price'] <= 0)].index
     df.drop(indexNames, inplace=True)
     indexNames = df[(df['price'] > 400)].index
-    df.drop(indexNames, inplace=True)
-
-    df_aberrant_profit = df[df.profit <= 0]
-    csv_name = f"ABERRANT_PROFIT_{df_name}"
-    create_csv_result(csv_name, df_aberrant_profit)
-    print(f"\nNettoyage des actions de profit aberrants du fichier {df_name}.")
-    indexNames = df[(df['profit'] <= 0)].index
     df.drop(indexNames, inplace=True)
 
     df_duplicated = df.loc[df['name'].duplicated(keep=False), :]
@@ -92,7 +83,5 @@ def data_cleaning(df, df_name):
     df.drop(indexNames, inplace=True)
 
     df.sort_values(by=['percentage_yield', 'profit'], ascending=False, inplace=True)
-    csv_name = f"CLEANED_{df_name}"
-    create_csv_result(csv_name, df)
 
     return df
