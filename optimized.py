@@ -12,7 +12,7 @@ def optimized(original_df, df_name):
     - Il est impossible d'acheter une fraction d'action.
     - L'investissement maximal est de 500 euros.
 
-    Nettoie, trie les datas et crée le rapport d'exploration des données.
+    Crée le rapport d'exploration des données, nettoie et trie les datas par bénéfice et profit (ordre descendant).
     Démarre le timer.
     Crée la liste d'actions et initialise la combinaison d'actions, leur nombre, l'investissement total et le profit.
     Parcourt la liste dans l'ordre descendant de bénéfice et profit (tri donné par data_cleaning)
@@ -67,14 +67,14 @@ def optimized(original_df, df_name):
 def run_menu():
     """Affiche le menu et lance l'algorithme sur le fichier choisi."""
     menu = pyip.inputMenu(
-        choices=["Dataset 0", "Dataset 1", "Dataset 2", "Quitter"],
+        choices=["Dataset 1", "Dataset 2", "Dataset 0", "Quitter"],
         prompt="\n----- LANCER L'ALGORITHME OPTIMISE SUR LE FICHIER -----\n", numbered=True)
-    if menu == "Dataset 0":
-        optimized(DATAFRAME_0, "Dataset 0")
-    elif menu == "Dataset 1":
+    if menu == "Dataset 1":
         optimized(DATAFRAME_1, "Dataset 1")
     elif menu == "Dataset 2":
         optimized(DATAFRAME_2, "Dataset 2")
+    elif menu == "Dataset 0":
+        optimized(DATAFRAME_0, "Dataset 0")
     else:
         exit()
 
