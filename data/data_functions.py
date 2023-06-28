@@ -35,11 +35,11 @@ def data_cleaning(df, df_name):
     """
     Crée le rapport d'exploration des données.
     Recherche, exporte en csv et supprime :
-        les actions d'un prix aberrant (<= 0€ et > à 400€)
+        les actions d'un prix aberrant (<= 0€)
         les doublons
     Ajoute la colonne calculée "yield" (rendement) au dataframe.
     Crée la boite à moustache sur les bénéfices (en %) des données nettoyées.
-    Recherche, exporte en csv et supprime les actions au pourcentage de bénéfice aberrant.
+    Recherche, exporte en csv et supprime les actions au % de bénéfice aberrant selon les données de Sienna (< 300%).
     Trie le dataframe par bénéfice et profit dans l'ordre descendant.
     Retourne le dataframe trié, enrichi de la colonne percentage_yield et nettoyé des données aberrantes et dupliquées.
     """
@@ -48,15 +48,11 @@ def data_cleaning(df, df_name):
     df_describe = df.describe()
     print(df_describe)
 
-    df_aberrant_price_down = df[df.price <= 0]
-    df_aberrant_price_high = df[df.price > 400]
-    df_aberrant_price = pd.concat([df_aberrant_price_down, df_aberrant_price_high])
+    df_aberrant_price = df[df.price <= 0]
     csv_name = f"ABERRANT_PRICE_{df_name}"
     create_csv_result(csv_name, df_aberrant_price)
     print(f"\nNettoyage des actions de prix aberrants du fichier {df_name}.")
     indexNames = df[(df['price'] <= 0)].index
-    df.drop(indexNames, inplace=True)
-    indexNames = df[(df['price'] > 400)].index
     df.drop(indexNames, inplace=True)
 
     df_duplicated = df.loc[df['name'].duplicated(keep=False), :]

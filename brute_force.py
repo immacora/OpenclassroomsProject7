@@ -12,12 +12,13 @@ def brute_force(df):
     - Il est impossible d'acheter une fraction d'action.
     - L'investissement maximal est de 500 euros.
 
-    Itère sur le nombre d'actions de la liste pour créer, a chaque tour,
+    Itère sur le nombre d'actions de la liste pour créer, à chaque tour,
     la liste des combinaisons possibles de longueur i avec la fonction combinations du module itertools.
-        Crée 1 dictionnaire pour chaque combinaison de la liste (+nombre d'actions, investissement et profit total).
-        Ajoute chaque dictionnaire à la liste totale des combinaisons pour export en csv.
-        Filtre les résultats par montant d'investissement (max: 500 euros).
-        Sélectionne la meilleure combinaison par comparaison de profit max.
+        Parcourt la liste des combinaisons obtenues pour :
+        créer 1 dictionnaire par combinaison (+nombre d'actions, investissement et profit total),
+        ajouter chaque dictionnaire à la liste totale des combinaisons pour export en csv,
+        filtrer les résultats par montant d'investissement (max: 500 euros) et profit total,
+        ajouter le résultat du filtrage au dictionnaire optimal_investment pour export en csv.
     Résultat :
         csv : liste de toutes les combinaisons
         csv : investissement optimal
