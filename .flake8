@@ -3,7 +3,6 @@
 exclude=
     .gitignore,
     __pycache__,
-    data/,
     result/,
     .venv/,
     README.md,
