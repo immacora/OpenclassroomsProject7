@@ -12,16 +12,18 @@ def optimized(original_df, df_name):
     - Il est impossible d'acheter une fraction d'action.
     - L'investissement maximal est de 500 euros.
 
-    Crée le rapport d'exploration des données, nettoie et trie les datas par bénéfice et profit (ordre descendant).
+    Crée le rapport d'exploration des données et nettoie les datas (data_cleaning).
+    Trie le dataframe par profit (% de bénéfice) dans l'ordre descendant.
     Démarre le timer.
     Crée la liste d'actions et initialise la combinaison d'actions, leur nombre, l'investissement total et le profit.
-    Parcourt la liste dans l'ordre descendant de bénéfice et profit (tri donné par data_cleaning)
+    Parcourt la liste dans l'ordre descendant de profit
     Ajoute l'action si son prix ajouté n'excède pas l'investissement maximal
     Continue jusqu'à ce que l'investissement maximal de 500 euros soit atteint.
     """
     try:
         print(f"\nFichier d'actions {df_name}, rapport d'exploration des données:")
         df = data_cleaning(original_df, df_name)
+        df.sort_values(by=['profit'], ascending=False, inplace=True)
 
         print("\nDébut du calcul par algorithme glouton.")
         start_time = time.time()
@@ -36,8 +38,7 @@ def optimized(original_df, df_name):
                 stocks_combination.append(stock)
                 nb_stocks += 1
                 total_investment += stock[1]
-                total_profit += stock[2]
-                stock.pop(3)
+                total_profit += (stock[1]*stock[2])/100
 
         optimal_investment = {
             'stocks_combination': stocks_combination,

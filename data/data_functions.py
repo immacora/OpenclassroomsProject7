@@ -1,6 +1,5 @@
 from pathlib import Path
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 BASE_DIR = Path(__file__).parent
@@ -37,11 +36,7 @@ def data_cleaning(df, df_name):
     Recherche, exporte en csv et supprime :
         les actions d'un prix aberrant (<= 0€)
         les doublons
-    Ajoute la colonne calculée "yield" (rendement) au dataframe.
-    Crée la boite à moustache sur les bénéfices (en %) des données nettoyées.
-    Recherche, exporte en csv et supprime les actions au % de bénéfice aberrant selon les données de Sienna (< 300%).
-    Trie le dataframe par bénéfice et profit dans l'ordre descendant.
-    Retourne le dataframe trié, enrichi de la colonne percentage_yield et nettoyé des données aberrantes et dupliquées.
+    Retourne le dataframe nettoyé des données aberrantes et dupliquées.
     """
     print(f"\nRapport d'exploration des données initiales du {df_name}.")
 
@@ -60,24 +55,5 @@ def data_cleaning(df, df_name):
     create_csv_result(csv_name, df_duplicated)
     print(f"\nNettoyage des doublons du fichier {df_name}.")
     df.drop_duplicates(subset="name", keep=False, inplace=True)
-
-    print(f"\nVisualisation des bénéfices extrêmes des données nettoyées du {df_name}.")
-    df['percentage_yield'] = (df['profit'] / df['price'])*100
-
-    plt.boxplot(df["percentage_yield"], )
-    plt.title(f"Caractéristiques statistiques des bénéfices du {df_name}:")
-    plt.ylabel('Bénéfices des actions en %')
-    plt.xlabel('Actions')
-    plt.grid()
-    plt.show()
-
-    df_aberrant_percentage_yield = df[df.percentage_yield > 300]
-    csv_name = f"ABERRANT_PERCENTAGE_YIELD_{df_name}"
-    create_csv_result(csv_name, df_aberrant_percentage_yield)
-    print(f"\nNettoyage des actions de bénéfice aberrants du fichier {df_name}.")
-    indexNames = df[(df['percentage_yield'] > 300)].index
-    df.drop(indexNames, inplace=True)
-
-    df.sort_values(by=['percentage_yield', 'profit'], ascending=False, inplace=True)
 
     return df

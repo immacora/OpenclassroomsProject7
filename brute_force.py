@@ -10,12 +10,12 @@ def brute_force(df):
     et sélectionnant celle qui totalise le meilleur profit sur 2 ans selon certains critères:
     - Chaque action ne peut être achetée qu'une seule fois.
     - Il est impossible d'acheter une fraction d'action.
-    - L'investissement maximal est de 500 euros.
+    - L'investissement maximal est de 500 €.
 
     Itère sur le nombre d'actions de la liste pour créer, à chaque tour,
     la liste des combinaisons possibles de longueur i avec la fonction combinations du module itertools.
         Parcourt la liste des combinaisons obtenues pour :
-        créer 1 dictionnaire par combinaison (+nombre d'actions, investissement et profit total),
+        créer 1 dictionnaire par combinaison (+nombre d'actions, investissement et profit total en €),
         ajouter chaque dictionnaire à la liste totale des combinaisons pour export en csv,
         filtrer les résultats par montant d'investissement (max: 500 euros) et profit total,
         ajouter le résultat du filtrage au dictionnaire optimal_investment pour export en csv.
@@ -40,8 +40,7 @@ def brute_force(df):
             for combination in combinations:
                 nb_stocks = len(combination)
                 total_investment = sum(item[1] for item in combination)
-                total_profit = sum(item[2] for item in combination)
-
+                total_profit = sum((item[1]*item[2])/100 for item in combination)
                 combination_dict = {
                     'stocks_combination': list(combination),
                     'nb_stocks': nb_stocks,
